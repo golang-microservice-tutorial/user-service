@@ -55,7 +55,7 @@ func (ur *userRepository) Update(ctx context.Context, req *dto.UpdateUserRequest
 		Username:    req.Username,
 		Email:       req.Email,
 		PhoneNumber: req.PhoneNumber,
-		Password:    req.Password,
+		Password:    *req.Password,
 	}
 
 	err := ur.db.WithContext(ctx).
