@@ -7,6 +7,7 @@ import (
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func InitDatabase() (*gorm.DB, error) {
@@ -19,7 +20,9 @@ func InitDatabase() (*gorm.DB, error) {
 		Config.Database.Name,
 	)
 
-	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	})
 	if err != nil {
 		return nil, err
 	}
