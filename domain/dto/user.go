@@ -10,6 +10,7 @@ type LoginRequest struct {
 type UserResponse struct {
 	UUID        uuid.UUID `json:"uuid"`
 	Name        string    `json:"name"`
+	Username    string    `json:"username"`
 	PhoneNumber string    `json:"phoneNumber"`
 	Email       string    `json:"email"`
 	Role        string    `json:"role"`
@@ -34,7 +35,7 @@ type RegisterResponse struct {
 	User UserResponse `json:"user"`
 }
 
-type UpdateRequest struct {
+type UpdateUserRequest struct {
 	Name            string `json:"name" validate:"required"`
 	Username        string `json:"username" validate:"required"`
 	Password        string `json:"password,omitempty"`
