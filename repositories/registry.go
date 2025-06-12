@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	userRepositories "user-service/repositories/user"
+	userRepository "user-service/repositories/user"
 
 	"gorm.io/gorm"
 )
@@ -11,13 +11,13 @@ type repositoryRegistry struct {
 }
 
 type RepositoryRegistry interface {
-	UserRepositories() userRepositories.UserRepository
+	UserRepositories() userRepository.UserRepository
 }
 
 func NewRepositoryRegistry(db *gorm.DB) RepositoryRegistry {
 	return &repositoryRegistry{db: db}
 }
 
-func (r *repositoryRegistry) UserRepositories() userRepositories.UserRepository {
-	return userRepositories.NewUserRepository(r.db)
+func (r *repositoryRegistry) UserRepositories() userRepository.UserRepository {
+	return userRepository.NewUserRepository(r.db)
 }

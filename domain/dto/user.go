@@ -1,6 +1,10 @@
 package dto
 
-import "github.com/google/uuid"
+import (
+	"user-service/domain/models"
+
+	"github.com/google/uuid"
+)
 
 type LoginRequest struct {
 	Username string `json:"username" validate:"required"`
@@ -8,12 +12,12 @@ type LoginRequest struct {
 }
 
 type UserResponse struct {
-	UUID        uuid.UUID `json:"uuid"`
-	Name        string    `json:"name"`
-	Username    string    `json:"username"`
-	PhoneNumber string    `json:"phoneNumber"`
-	Email       string    `json:"email"`
-	Role        string    `json:"role"`
+	UUID        uuid.UUID   `json:"uuid"`
+	Name        string      `json:"name"`
+	Username    string      `json:"username"`
+	PhoneNumber string      `json:"phoneNumber"`
+	Email       string      `json:"email"`
+	Role        models.Role `json:"role"`
 }
 
 type LoginResponse struct {
@@ -36,11 +40,11 @@ type RegisterResponse struct {
 }
 
 type UpdateUserRequest struct {
-	Name            string `json:"name" validate:"required"`
-	Username        string `json:"username" validate:"required"`
-	Password        string `json:"password,omitempty"`
-	ConfirmPassword string `json:"confirmPassword,omitempty"`
-	PhoneNumber     string `json:"phoneNumber" validate:"required,min=10,max=15"`
-	Email           string `json:"email" validate:"required,email"`
+	Name            string  `json:"name" validate:"required"`
+	Username        string  `json:"username" validate:"required"`
+	Password        *string `json:"password,omitempty"`
+	ConfirmPassword *string `json:"confirmPassword,omitempty"`
+	PhoneNumber     string  `json:"phoneNumber" validate:"required,min=10,max=15"`
+	Email           string  `json:"email" validate:"required,email"`
 	RoleID          uint
 }
