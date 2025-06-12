@@ -14,7 +14,7 @@ type Response struct {
 	Status  string  `json:"status"`
 	Message any     `json:"message"`
 	Data    any     `json:"data"`
-	Token   *string `json:"token"`
+	Token   *string `json:"token,omitempty"`
 }
 
 type ParamHTTPResponse struct {
@@ -52,5 +52,4 @@ func HttpResponse(param ParamHTTPResponse) {
 		Data:    param.Data,
 		Token:   param.Token,
 	})
-	return
 }
