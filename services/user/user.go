@@ -20,7 +20,7 @@ type UserService interface {
 	Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error)
 	Update(ctx context.Context, req *dto.UpdateUserRequest, uuid string) (*dto.UserResponse, error)
 	// GetUserLogin(context.Context) (*dto.UserResponse, error)
-	// FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error)
+	FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error)
 }
 
 type userService struct {
@@ -152,9 +152,24 @@ func (us *userService) Update(ctx context.Context, req *dto.UpdateUserRequest, u
 	}, nil
 }
 
-// func (us *userService) GetUserLogin(context.Context) (*dto.UserResponse, error) {}
+// func (us *userService) GetUserLogin(ctx context.Context) (*dto.UserResponse, error) {
+// 	ctx.
+// }
 
-// func (us *userService) FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error) {}
+func (us *userService) FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error) {
+	user, err := us.userRepository.FindByUUID(ctx, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.UserResponse{
+		UUID:        user.UUID,
+		Name:        user.Name,
+		Username:    user.Username,
+		PhoneNumber: user.PhoneNumber,
+		Email:       user.Email,
+	}, nil
+}
 
 // helper
 func (us *userService) isUsernameExist(ctx context.Context, username string) bool {
