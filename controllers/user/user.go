@@ -18,7 +18,7 @@ type UserController interface {
 	Login(*gin.Context)
 	Register(*gin.Context)
 	Update(*gin.Context)
-	GetUserLogin(*gin.Context)
+	// GetUserLogin(*gin.Context)
 	GetUserByUUID(*gin.Context)
 }
 
@@ -129,13 +129,90 @@ func (uc *userController) Register(ctx *gin.Context) {
 }
 
 func (uc *userController) Update(ctx *gin.Context) {
-	panic("not implemented") // TODO: Implement
+	var req dto.UpdateUserRequest
+	uuid := ctx.Param("uuid")
+
+	err := ctx.ShouldBindJSON(&req)
+	if err != nil {
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code: http.StatusBadRequest,
+			Err:  err,
+			Gin:  ctx,
+		})
+		return
+	}
+
+	// confirm password check
+	if req.Password != nil && req.Password != req.ConfirmPassword {
+		errMessage := "password not match"
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code:    http.StatusBadRequest,
+			Err:     errors.New("password not match"),
+			Gin:     ctx,
+			Message: &errMessage,
+		})
+		return
+	}
+
+	if err = uc.validator.Struct(&req); err != nil {
+		errMessage := http.StatusText(http.StatusUnprocessableEntity)
+		errResponse := errWrap.ErrValidationResponse(err)
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code:    http.StatusBadRequest,
+			Message: &errMessage,
+			Err:     err,
+			Gin:     ctx,
+			Data:    errResponse,
+		})
+		return
+	}
+
+	user, err := uc.service.UserServices().Update(ctx, &req, uuid)
+	if err != nil {
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code: http.StatusBadRequest,
+			Err:  err,
+			Gin:  ctx,
+		})
+		return
+	}
+	response.HttpResponse(response.ParamHTTPResponse{
+		Code: http.StatusOK,
+		Gin:  ctx,
+		Data: user,
+	})
 }
 
-func (uc *userController) GetUserLogin(ctx *gin.Context) {
-	panic("not implemented") // TODO: Implement
-}
+// func (uc *userController) GetUserLogin(ctx *gin.Context) {
+// 	user, err := uc.service.UserServices().GetUserLogin(ctx)
+// 	if err != nil {
+// 		response.HttpResponse(response.ParamHTTPResponse{
+// 			Code: http.StatusBadRequest,
+// 			Err:  err,
+// 			Gin:  ctx,
+// 		})
+// 	}
+
+// 	response.HttpResponse(response.ParamHTTPResponse{
+// 		Code: http.StatusOK,
+// 		Gin:  ctx,
+// 		Data: user,
+// 	})
+// }
 
 func (uc *userController) GetUserByUUID(ctx *gin.Context) {
-	panic("not implemented") // TODO: Implement
+	user, err := uc.service.UserServices().FindByUUID(ctx, ctx.Param("uuid"))
+	if err != nil {
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code: http.StatusBadRequest,
+			Err:  err,
+			Gin:  ctx,
+		})
+	}
+
+	response.HttpResponse(response.ParamHTTPResponse{
+		Code: http.StatusOK,
+		Gin:  ctx,
+		Data: user,
+	})
 }
