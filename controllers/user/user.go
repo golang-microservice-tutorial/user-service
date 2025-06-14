@@ -19,7 +19,7 @@ type UserController interface {
 	Login(*gin.Context)
 	Register(*gin.Context)
 	Update(*gin.Context)
-	// GetUserLogin(*gin.Context)
+	GetUserLogin(*gin.Context)
 	GetUserByUUID(*gin.Context)
 }
 
@@ -183,22 +183,22 @@ func (uc *userController) Update(ctx *gin.Context) {
 	})
 }
 
-// func (uc *userController) GetUserLogin(ctx *gin.Context) {
-// 	user, err := uc.service.UserServices().GetUserLogin(ctx)
-// 	if err != nil {
-// 		response.HttpResponse(response.ParamHTTPResponse{
-// 			Code: http.StatusBadRequest,
-// 			Err:  err,
-// 			Gin:  ctx,
-// 		})
-// 	}
+func (uc *userController) GetUserLogin(ctx *gin.Context) {
+	user, err := uc.service.UserServices().GetUserLogin(ctx)
+	if err != nil {
+		response.HttpResponse(response.ParamHTTPResponse{
+			Code: http.StatusBadRequest,
+			Err:  err,
+			Gin:  ctx,
+		})
+	}
 
-// 	response.HttpResponse(response.ParamHTTPResponse{
-// 		Code: http.StatusOK,
-// 		Gin:  ctx,
-// 		Data: user,
-// 	})
-// }
+	response.HttpResponse(response.ParamHTTPResponse{
+		Code: http.StatusOK,
+		Gin:  ctx,
+		Data: user,
+	})
+}
 
 func (uc *userController) GetUserByUUID(ctx *gin.Context) {
 	user, err := uc.service.UserServices().FindByUUID(ctx, ctx.Param("uuid"))

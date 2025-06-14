@@ -6,6 +6,7 @@ import (
 
 	errorWrap "user-service/common/error"
 	"user-service/config"
+	"user-service/constants"
 	errConstant "user-service/constants/error"
 	"user-service/domain/dto"
 	userRepositories "user-service/repositories/user"
@@ -19,7 +20,7 @@ type UserService interface {
 	Register(ctx context.Context, req *dto.RegisterRequest) (*dto.RegisterResponse, error)
 	Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error)
 	Update(ctx context.Context, req *dto.UpdateUserRequest, uuid string) (*dto.UserResponse, error)
-	// GetUserLogin(context.Context) (*dto.UserResponse, error)
+	GetUserLogin(context.Context) (*dto.UserResponse, error)
 	FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error)
 }
 
@@ -152,9 +153,13 @@ func (us *userService) Update(ctx context.Context, req *dto.UpdateUserRequest, u
 	}, nil
 }
 
-// func (us *userService) GetUserLogin(ctx context.Context) (*dto.UserResponse, error) {
-// 	ctx.
-// }
+func (us *userService) GetUserLogin(ctx context.Context) (*dto.UserResponse, error) {
+	user, ok := ctx.Value(constants.UserLogin).(*dto.UserResponse)
+	if !ok {
+		return nil, errConstant.ErrUnauthorized
+	}
+	return user, nil
+}
 
 func (us *userService) FindByUUID(ctx context.Context, uuid string) (*dto.UserResponse, error) {
 	user, err := us.userRepository.FindByUUID(ctx, uuid)
