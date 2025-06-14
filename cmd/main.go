@@ -80,7 +80,8 @@ var command = &cobra.Command{
 		controllers := controllers.NewControllerRegistry(services, validator)
 
 		// setuprouter
-		router := gin.Default()
+		router := gin.New()
+		router.Use(gin.Logger())
 		router.Use(middlewares.CustomRecovery())
 		router.NoRoute(func(ctx *gin.Context) {
 			ctx.JSON(http.StatusNotFound, response.Response{
