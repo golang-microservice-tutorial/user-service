@@ -191,6 +191,7 @@ func (uc *userController) GetUserLogin(ctx *gin.Context) {
 			Err:  err,
 			Gin:  ctx,
 		})
+		return
 	}
 
 	response.HttpResponse(response.ParamHTTPResponse{
@@ -208,6 +209,7 @@ func (uc *userController) GetUserByUUID(ctx *gin.Context) {
 			Err:  err,
 			Gin:  ctx,
 		})
+		return
 	}
 
 	response.HttpResponse(response.ParamHTTPResponse{
