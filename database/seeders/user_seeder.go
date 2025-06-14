@@ -18,7 +18,7 @@ func RunUserSeeder(db *gorm.DB) {
 
 	user := models.User{
 		UUID:        uuid.New(),
-		Name:        "Admin User",
+		Name:        "Admin",
 		Username:    "admin",
 		Password:    string(password),
 		PhoneNumber: "08123456789",
