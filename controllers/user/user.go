@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"user-service/common/response"
+	"user-service/constants"
 	"user-service/domain/dto"
 	"user-service/services"
 
@@ -89,10 +90,9 @@ func (uc *userController) Register(ctx *gin.Context) {
 
 	// confirm password check
 	if req.ConfirmPassword != req.Password {
-		errMessage := "password not match"
+		errMessage := constants.PasswordNotmatch
 		response.HttpResponse(response.ParamHTTPResponse{
 			Code:    http.StatusBadRequest,
-			Err:     errors.New("password not match"),
 			Gin:     ctx,
 			Message: &errMessage,
 		})
@@ -144,10 +144,10 @@ func (uc *userController) Update(ctx *gin.Context) {
 
 	// confirm password check
 	if req.Password != nil && req.Password != req.ConfirmPassword {
-		errMessage := "password not match"
+		errMessage := constants.PasswordNotmatch
 		response.HttpResponse(response.ParamHTTPResponse{
 			Code:    http.StatusBadRequest,
-			Err:     errors.New("password not match"),
+			Err:     errors.New(constants.PasswordNotmatch),
 			Gin:     ctx,
 			Message: &errMessage,
 		})
