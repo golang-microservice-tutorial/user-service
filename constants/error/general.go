@@ -7,6 +7,7 @@ var (
 	ErrBadRequest         = errors.New("bad request")
 	ErrUnauthorized       = errors.New("unauthorized")
 	ErrInvalidCredentials = errors.New("invalid credentials")
+	ErrInvalidToken       = errors.New("invalid token")
 	ErrForbidden          = errors.New("forbidden")
 	ErrTooManyRequests    = errors.New("too many requests")
 
