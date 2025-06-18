@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"auth-service/config"
+	"user-service/config"
 
 	"github.com/sirupsen/logrus"
 )
