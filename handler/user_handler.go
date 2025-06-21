@@ -71,7 +71,7 @@ func (h *userHandler) ListUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	arg := db.ListUsersParams{
-		Search: helper.ToPGText(req.Search),
+		Search: helper.StringToPGTextValid(req.Search),
 		Offset: req.Offset,
 		Limit:  req.Limit,
 	}

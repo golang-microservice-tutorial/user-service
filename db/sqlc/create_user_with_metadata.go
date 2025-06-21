@@ -40,8 +40,12 @@ func (s *store) CreateUserWithMetadata(ctx context.Context, arg CreateuserWithMe
 			UserID:   result.ID,
 			Metadata: jsonMeta,
 		})
-		logger.Log.Errorf("failed to create user_metadata: %v", err)
-		return err
+		if err != nil {
+			logger.Log.Errorf("failed to create user_metadata: %v", err)
+			return err
+		}
+
+		return nil
 	})
 	return result, err
 }
