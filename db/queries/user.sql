@@ -23,7 +23,6 @@ SELECT
   u.updated_at AS user_updated_at,
   u.deleted_at,
 
-  m.id AS metadata_id,
   m.metadata,
   m.created_at AS metadata_created_at
 FROM users u

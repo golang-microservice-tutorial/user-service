@@ -96,40 +96,49 @@ func (q *Queries) GetUserByID(ctx context.Context, id uuid.UUID) (User, error) {
 
 const getUserWithMetadata = `-- name: GetUserWithMetadata :one
 SELECT 
-  u.id, u.email, u.full_name, u.phone_number, u.role, u.avatar_url, u.created_at, u.updated_at, u.deleted_at, 
-  m.metadata
+  u.email,
+  u.full_name,
+  u.phone_number,
+  u.role,
+  u.avatar_url,
+  u.created_at AS user_created_at,
+  u.updated_at AS user_updated_at,
+  u.deleted_at,
+
+  m.metadata,
+  m.created_at AS metadata_created_at
 FROM users u
 LEFT JOIN user_metadata m ON m.user_id = u.id
 WHERE u.id = $1 AND u.deleted_at IS NULL
 `
 
 type GetUserWithMetadataRow struct {
-	ID          uuid.UUID          `json:"id"`
-	Email       string             `json:"email"`
-	FullName    pgtype.Text        `json:"full_name"`
-	PhoneNumber pgtype.Text        `json:"phone_number"`
-	Role        string             `json:"role"`
-	AvatarUrl   pgtype.Text        `json:"avatar_url"`
-	CreatedAt   pgtype.Timestamptz `json:"created_at"`
-	UpdatedAt   pgtype.Timestamptz `json:"updated_at"`
-	DeletedAt   pgtype.Timestamptz `json:"deleted_at"`
-	Metadata    []byte             `json:"metadata"`
+	Email             string             `json:"email"`
+	FullName          pgtype.Text        `json:"full_name"`
+	PhoneNumber       pgtype.Text        `json:"phone_number"`
+	Role              string             `json:"role"`
+	AvatarUrl         pgtype.Text        `json:"avatar_url"`
+	UserCreatedAt     pgtype.Timestamptz `json:"user_created_at"`
+	UserUpdatedAt     pgtype.Timestamptz `json:"user_updated_at"`
+	DeletedAt         pgtype.Timestamptz `json:"deleted_at"`
+	Metadata          []byte             `json:"metadata"`
+	MetadataCreatedAt pgtype.Timestamptz `json:"metadata_created_at"`
 }
 
 func (q *Queries) GetUserWithMetadata(ctx context.Context, id uuid.UUID) (GetUserWithMetadataRow, error) {
 	row := q.db.QueryRow(ctx, getUserWithMetadata, id)
 	var i GetUserWithMetadataRow
 	err := row.Scan(
-		&i.ID,
 		&i.Email,
 		&i.FullName,
 		&i.PhoneNumber,
 		&i.Role,
 		&i.AvatarUrl,
-		&i.CreatedAt,
-		&i.UpdatedAt,
+		&i.UserCreatedAt,
+		&i.UserUpdatedAt,
 		&i.DeletedAt,
 		&i.Metadata,
+		&i.MetadataCreatedAt,
 	)
 	return i, err
 }
