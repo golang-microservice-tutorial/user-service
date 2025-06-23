@@ -2,5 +2,5 @@
 
 .env
 
-key/private.key
+key/private.pem
 key/public.pem

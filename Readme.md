@@ -10,6 +10,6 @@ go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 ```
 
 # generate pem
-openssl genrsa -out key/private.key 2048
+openssl genpkey -algorithm RSA -out ./key/private.pem -pkeyopt rsa_keygen_bits:2048
 
-openssl rsa -in key/private.key -pubout -out key/public.pem
+openssl rsa -pubout -in ./key/private.pem -out ./key/public.pem
